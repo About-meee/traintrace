@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1720">
+  <meta name="description" content="个人运动记录">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/assets/app-192.png">
+  <title>练迹 · TRAINTRACE</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/reference-finish.css">
+  <link rel="icon" href="/assets/app-192.png">
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <header class="site-bar">
+    <a class="brand" href="#home" aria-label="返回首页"><span class="brand-mark">＋</span><span>个人训练记录<small>EXERCISE LOG</small></span></a>
+    <div class="site-bar-right"><span class="sync-indicator"><i></i><span id="sync-status">已连接站点</span></span><button class="text-button" id="exit-training" type="button">退出练迹</button><button class="icon-button" id="top-home" aria-label="返回首页" title="首页"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg></button></div>
+  </header>
+  <main id="app" tabindex="-1">
+    <section class="view home-view" id="view-home">
+      <div class="home-scene">
+        <div class="home-time"><strong id="clock-time"></strong><span id="clock-date"></span></div>
+        <div class="scene-title"><span class="corner corner-tl"></span><span class="corner corner-br"></span><h1>练迹</h1><small lang="en">TRAINTRACE</small></div>
+        <div class="scene-crosshair" aria-hidden="true"></div>
+        <svg class="scene-path" viewBox="0 0 520 220" aria-hidden="true"><path d="M0 181 C 82 160, 91 112, 158 126 S 245 199, 292 148 S 370 60, 520 43"/></svg>
+        <div class="home-actions">
+          <button class="feature-link" id="start-record"><span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 28 28"><path d="M3 14h22M14 3v22M5 8v12m18-12v12"/></svg></span><span>记录训练<small>LOG EXERCISE</small></span><b>→</b></button>
+          <button class="quiet-link" id="open-history"><span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 28 28"><path d="m14 3 11 6-11 6L3 9zm-11 11 11 6 11-6M3 19l11 6 11-6"/></svg></span><span>查看历史<small>VIEW HISTORY</small></span><b>→</b></button>
+          <p class="home-tagline"><span>每一次训练，都有迹可循。</span><small lang="en">PERSONAL TRAINING JOURNAL</small></p>
+        </div>
+      </div>
+      <div class="home-foot mono">LOCAL TIME&nbsp; · &nbsp;PRIVATE LOG</div>
+    </section>
+
+    <section class="view picker-view" id="view-picker" hidden>
+      <div class="view-heading">
+        <button class="icon-button" id="picker-back" aria-label="返回首页"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+        <div><h1>选择部位</h1><p>SELECT TARGET AREA</p></div>
+        <button class="icon-button push-right" data-home aria-label="返回首页"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg></button>
+      </div>
+      <div class="body-picker-layout">
+        <div class="body-silhouette" aria-hidden="true">
+          <div class="body-figure">
+            <img class="body-front" src="/assets/body.webp" alt="">
+            <img class="body-rear" src="/assets/body-rear.webp" alt="">
+          </div>
+        </div>
+        <div class="part-list" id="part-list"></div>
+      </div>
+      <div class="section-foot mono">SELECT TARGET AREA</div>
+    </section>
+
+    <section class="view record-view" id="view-record" hidden>
+      <div class="view-heading compact-heading">
+        <button class="icon-button" id="record-back" aria-label="返回部位选择"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+        <div><p id="record-part-label">CHEST</p><h1 id="record-title">平板杠铃卧推</h1></div>
+        <button class="icon-button push-right" data-home aria-label="返回首页"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg></button>
+      </div>
+      <div class="exercise-hero"><div class="exercise-copy"><p class="mono" id="record-en">BARBELL BENCH PRESS</p><p class="record-cue" id="record-cue" hidden></p></div><div class="bench-illustration" id="record-art" aria-hidden="true"></div></div>
+      <div class="set-table-wrap"><div class="set-head" id="set-head"></div><div class="set-list" id="set-list"></div></div>
+      <p class="group-limit" id="group-limit" hidden>最多可记录 100 组</p>
+      <div class="set-tools"><button class="outline-button" id="add-set"><span>＋</span>新增空白组</button><button class="outline-button" id="copy-set"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="1"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>复制上一组</button></div>
+      <div class="record-actions"><button class="text-button" id="cancel-record"><svg viewBox="0 0 24 24"><path d="M4 7h16m-10 4v7m4-7v7M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>取消记录</button><button class="primary-button" id="finish-action">结束动作<span>→</span></button></div>
+      <p class="autosave-hint mono"><i></i><span>草稿同步到站点</span></p>
+    </section>
+
+    <section class="view fatigue-view" id="view-fatigue" hidden>
+      <button class="icon-button fatigue-back" id="fatigue-back" aria-label="返回未结束记录"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="fatigue-header"><h1>记录疲劳程度</h1><p>在体力耗尽前，尽情点击</p><small>FATIGUE · TAP TO RECORD</small></div>
+      <button class="fatigue-orb" id="fatigue-tap" aria-label="点击记录一次疲劳"><span class="orb-ring"></span><span class="orb-cross">＋</span><img class="fist-mark" src="/assets/fists.svg" alt=""><strong id="fatigue-count">0</strong><span class="orb-unit">次</span></button>
+      <p class="fatigue-instruction" id="fatigue-hint">触碰圆环，记录此动作的疲劳感</p>
+      <div class="fatigue-progress"><span id="fatigue-progress"></span></div>
+      <div class="fatigue-scene" aria-hidden="true"></div>
+      <p class="fatigue-clock mono" id="fatigue-clock">READY</p>
+    </section>
+
+    <section class="view history-view" id="view-history" hidden>
+      <div class="history-shell">
+        <aside class="history-rail">
+          <div class="history-desktop-brand">
+            <p>个人训练记录</p><small>EXERCISE LOG</small>
+            <button class="feature-link history-start" id="history-start"><span aria-hidden="true">＋</span><span>记录训练<small>LOG EXERCISE</small></span><b>→</b></button>
+          </div>
+          <div class="view-heading history-heading"><button class="icon-button" data-home aria-label="返回首页"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><h1>历史记录</h1><p>TRAINING HISTORY</p></div></div>
+          <div class="today-shortcut"><small>TODAY</small><strong id="today-label"></strong><span id="today-date-en" class="mono"></span></div>
+          <button class="date-picker-trigger" id="open-date-picker"><span>按日期查询</span><span class="mono">SELECT DATE</span><b>⌄</b></button>
+          <div class="date-query-panel" id="date-query-panel">
+            <div class="date-mobile-heading"><h2 id="date-mobile-title">选择日期</h2><button class="date-panel-close" id="cancel-date-picker" type="button" aria-label="关闭">×</button></div>
+            <div class="date-fields"><label>年<input id="date-year" type="number" inputmode="numeric" min="2000" max="2200" aria-label="年份"></label><label>月<input id="date-month" type="number" inputmode="numeric" min="1" max="12" aria-label="月份"></label><label>日<input id="date-day" type="number" inputmode="numeric" min="1" max="31" aria-label="日期"></label></div>
+            <div class="date-mobile-field"><input id="date-mobile" type="date" min="2000-01-01" max="2200-12-31" aria-labelledby="date-mobile-title" autocomplete="off"></div>
+            <button class="primary-button query-button" id="query-history">查询<span>→</span></button>
+          </div>
+          <div class="history-export"><button class="text-button" id="export-json">↓ JSON</button><button class="text-button" id="export-csv">↓ CSV</button></div>
+        </aside>
+        <div class="history-content">
+          <div class="history-title-row"><div><p class="eyebrow mono">PERSONAL EXERCISE LOG</p><h2 id="history-date-title">今天</h2><span class="mono" id="history-iso-date"></span></div><button class="icon-button" data-home aria-label="返回首页"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg></button></div>
+          <div class="history-timeline" id="history-list"></div>
+          <div class="empty-state" id="history-empty" hidden><span class="empty-grid">＋</span><h3>这一天还没有记录</h3><p>选择另一个日期，或记录今天的训练</p><button class="outline-button" id="history-empty-home">返回首页</button></div>
+          <p class="history-foot mono">READ ONLY&nbsp; · &nbsp;YOUR MOVEMENT, OVER TIME</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="draft-float" id="draft-float" hidden><button id="resume-draft"><span class="draft-pulse"></span><span><small>记录中 · <b id="draft-name"></b></small><em id="draft-groups"></em></span><span class="draft-arrow">→</span></button></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <dialog class="modal" id="exercise-modal" aria-labelledby="exercise-modal-title"><div class="modal-scrim" data-close-exercises></div><section class="exercise-sheet"><div class="sheet-handle"></div><header class="sheet-heading"><div><h2 id="exercise-modal-title">胸部动作</h2><p class="mono" id="exercise-modal-en">CHEST EXERCISES</p></div><button class="icon-button" data-close-exercises aria-label="关闭"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header><div class="exercise-tabs"><button class="tab-button active" data-exercise-tab="recent">◷ 最近使用</button><button class="tab-button" data-exercise-tab="presets">▧ 预设动作</button><button class="tab-button" data-exercise-tab="custom">＋ 自定义</button></div><div class="exercise-list" id="exercise-list"></div><form class="custom-form" id="custom-form" hidden><label>动作名称<input id="custom-name" autocomplete="off" maxlength="48" required placeholder="输入动作名称"></label><label>记录方式<select id="custom-template" required></select></label><button class="primary-button" type="submit">保存并开始<span>→</span></button></form></section></dialog>
+
+  <dialog class="modal confirm-modal" id="confirm-modal"><div class="modal-scrim"></div><section class="confirm-panel"><span class="confirm-mark">!</span><h2 id="confirm-title">确认结束动作？</h2><p id="confirm-copy"></p><div class="confirm-actions"><button class="outline-button" data-modal-cancel>继续记录</button><button class="primary-button" id="confirm-yes">确认结束<span>→</span></button></div></section></dialog>
+  <dialog class="modal resume-modal" id="resume-modal"><div class="modal-scrim"></div><section class="confirm-panel"><span class="confirm-mark">◉</span><h2>当前有动作还未结束</h2><p id="resume-copy"></p><div class="confirm-actions"><button class="outline-button" data-resume-dismiss>留在此页</button><button class="primary-button" id="resume-yes">继续记录<span>→</span></button></div></section></dialog>
+  <dialog class="modal confirm-modal" id="workspace-conflict" aria-labelledby="workspace-conflict-title"><div class="modal-scrim"></div><section class="confirm-panel"><span class="confirm-mark">!</span><h2 id="workspace-conflict-title">草稿在另一处已更新</h2><p id="workspace-conflict-copy"></p><div class="confirm-actions"><button class="outline-button" id="workspace-use-server" type="button">使用站点版本</button><button class="primary-button" id="workspace-use-local" type="button">保留此设备版本<span>→</span></button></div></section></dialog>
+  <div class="network-toast" id="network-toast" role="status" hidden></div>
+</body>
+</html>

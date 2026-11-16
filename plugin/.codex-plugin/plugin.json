@@ -1,0 +1,13 @@
+{
+  "description": "练迹 · 私人训练日志",
+  "interface": {
+    "capabilities": [],
+    "category": "Other",
+    "defaultPrompt": null,
+    "displayName": "TRAINTRACE",
+    "longDescription": "练迹 · 私人训练日志",
+    "shortDescription": "练迹 · 私人训练日志"
+  },
+  "name": "traintrace",
+  "version": "1.0.1"
+}

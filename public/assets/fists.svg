@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 66">
+  <g fill="none" stroke="#d8e8ef" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path id="left" d="M4 52l13-10c2-2 3-5 4-8l3-10c1-4 3-5 6-5 1-4 4-5 7-4 2-3 5-3 8-1 2-2 5-1 7 1l4 5c2 3 0 6-2 7l-6 3 4 5c2 3 1 6-2 9l-10 8-5 10M30 19l7 9m0-13 7 9m1-10 6 8m-12 11 9-3m-22 4c4 2 5 5 5 9l-8 12m7-32 6 7-3 3-5-3" transform="translate(2 3) scale(.82 .92)"/>
+    <use href="#left" transform="translate(100 0) scale(-1 1)"/>
+  </g>
+</svg>
